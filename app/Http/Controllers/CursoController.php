@@ -10,7 +10,6 @@ class CursoController extends Controller
    
     public function index()
     {
-        // Eager loading para traer también los grupos de cada curso
         $cursos = Curso::with('grupos')->get();
 
         return response()->json($cursos);
@@ -18,20 +17,17 @@ class CursoController extends Controller
 
    
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'sigla' => 'required|string|max:10|unique:cursos,sigla',
-            'nombreCurso' => 'required|string|max:255',
-            'creditos' => 'required|integer|min:1|max:10',
-        ]);
+{
+    $validated = $request->validate([
+        'sigla' => 'required|string|max:10|unique:cursos,sigla',
+        'nombreCurso' => 'required|string|max:255',
+        'creditos' => 'required|integer',
+    ]);
 
-        $curso = Curso::create($validated);
+    $curso = Curso::create($validated);
 
-        return response()->json([
-            'mensaje' => 'Curso creado correctamente',
-            'curso' => $curso
-        ], 201);
-    }
+    return response()->json($curso, 201);
+}
 
     
     public function show($sigla)

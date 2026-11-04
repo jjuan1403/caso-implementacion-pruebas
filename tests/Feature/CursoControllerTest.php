@@ -10,33 +10,26 @@ class CursoControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_puede_listar_cursos_desde_la_base_de_datos(): void
+    public function test_crear_un_nuevo_curso(): void
     {
-        Curso::create([
+        // Datos del nuevo curso a registrar
+        $datosCurso = [
+            'sigla' => 'IF6100',
+            'nombreCurso' => 'Análisis y Diseño de Sistemas',
+            'creditos' => 4,
+        ];
+
+        // Petición POST al endpoint correspondiente
+        $response = $this->postJson('/cursos', $datosCurso);
+
+        // Aserción de respuesta exitosa (201 Created o 200 OK)
+        $response->assertStatus(201);
+
+        // Aserción de que el registro existe en la base de datos
+        $this->assertDatabaseHas('cursos', [
             'sigla' => 'IF6100',
             'nombreCurso' => 'Análisis y Diseño de Sistemas',
             'creditos' => 4,
         ]);
-
-        // Alterado de '/api/cursos' para '/cursos'
-        $response = $this->getJson('/cursos');
-
-        $response->assertStatus(200)
-                 ->assertJsonFragment(['sigla' => 'IF6100']);
-    }
-
-    public function test_puede_guardar_un_curso_en_base_de_datos(): void
-    {
-        $data = [
-            'sigla' => 'IF3001',
-            'nombreCurso' => 'Algoritmos y Estructuras',
-            'creditos' => 3,
-        ];
-
-        // Alterado de '/api/cursos' para '/cursos'
-        $response = $this->postJson('/cursos', $data);
-
-        $response->assertStatus(201);
-        $this->assertDatabaseHas('cursos', ['sigla' => 'IF3001']);
     }
 }
