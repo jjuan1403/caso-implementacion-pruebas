@@ -12,7 +12,12 @@ class Curso extends Model
     protected $primaryKey = 'sigla';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['sigla', 'nombreCurso', 'creditos'];
+
+    protected $fillable = [
+        'sigla',
+        'nombreCurso',
+        'creditos',
+    ];
 
     public function grupos()
     {
